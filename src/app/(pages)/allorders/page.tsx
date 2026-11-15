@@ -51,7 +51,6 @@ export default function Allorders() {
 }
 
 async function Orders() {
-  try {
     const token = await getMyToken()
     
     if (!token) {
@@ -65,8 +64,26 @@ async function Orders() {
       )
     }
 
-    const decodedtoken = jwtDecode<DecodedToken>(token)
-    const response: Order[] = await getUserOrders(decodedtoken.id)
+    let response: Order[] | undefined
+    let loadFailed = false
+    try {
+      const decodedtoken = jwtDecode<DecodedToken>(token)
+      response = await getUserOrders(decodedtoken.id)
+    } catch (error) {
+      console.error('Error loading orders:', error)
+      loadFailed = true
+    }
+
+    if (loadFailed) {
+      return (
+        <div className="flex min-h-[50vh] items-center justify-center p-4">
+          <div className="rounded-xl bg-red-50 p-6 text-center text-red-600 shadow-sm">
+            <h2 className="text-lg font-bold">Failed to Load Orders</h2>
+            <p className="mt-1 text-sm">Please try again later.</p>
+          </div>
+        </div>
+      )
+    }
 
     if (!response || response.length === 0) {
       return (
@@ -188,15 +205,4 @@ async function Orders() {
         </div>
       </div>
     )
-  } catch (error) {
-    console.error('Error loading orders:', error)
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center p-4">
-        <div className="rounded-xl bg-red-50 p-6 text-center text-red-600 shadow-sm">
-          <h2 className="text-lg font-bold">Failed to Load Orders</h2>
-          <p className="mt-1 text-sm">Please try again later.</p>
-        </div>
-      </div>
-    )
-  }
 }
