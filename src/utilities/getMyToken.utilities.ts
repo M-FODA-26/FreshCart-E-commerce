@@ -1,16 +1,15 @@
-'use server'
+import 'server-only'
 import { decode } from "next-auth/jwt";
 import { cookies } from "next/headers";
 
 
 
 
-
 export default async function getMyToken() {
 
-    const decoded=(await cookies()).get(`next-auth.session-token`)?.value || (await cookies()).get(`__Secure-next-auth.session-token`)?.value
+    const cookieStore = await cookies()
+    const decoded = cookieStore.get('next-auth.session-token')?.value || cookieStore.get('__Secure-next-auth.session-token')?.value
     const token =await decode({token:decoded,secret:process.env.NEXTAUTH_SECRET!})
-    console.log(token)
     return token?.token
     
 }

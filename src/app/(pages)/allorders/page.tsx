@@ -1,7 +1,7 @@
 import { getUserOrders } from '@/CheckoutApi/getUserOrders.api'
 import getMyToken from '@/utilities/getMyToken.utilities'
 import { jwtDecode } from 'jwt-decode'
-import React from 'react'
+import { Suspense } from 'react'
 
 interface OrderItem {
   _id?: string
@@ -36,7 +36,21 @@ interface DecodedToken {
   [key: string]: unknown;
 }
 
-export default async function Allorders() {
+export default function Allorders() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center p-4">
+          <p className="text-sm text-slate-500">Loading your orders...</p>
+        </div>
+      }
+    >
+      <Orders />
+    </Suspense>
+  )
+}
+
+async function Orders() {
   try {
     const token = await getMyToken()
     
