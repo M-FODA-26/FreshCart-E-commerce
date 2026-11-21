@@ -6,7 +6,7 @@ export async function getLoggedCart() {
 
     const token=await getMyToken()
     if (!token) {
-        throw new Error('login first')
+        return {status:'success',data:[],count:0,numOfCartItem:0}
     }
     const response =await fetch(`https://ecommerce.routemisr.com/api/v2/cart`,{
         method:'GET',

@@ -8,7 +8,7 @@ import getMyToken from "@/utilities/getMyToken.utilities";
 export async function getLoggedWishList() {
 const token=await getMyToken()
 if (!token) {
-    throw new Error('login first')
+  return []
 }
 const response =await fetch(`https://ecommerce.routemisr.com/api/v1/wishlist`,{
     method:'GET',
@@ -18,6 +18,6 @@ const response =await fetch(`https://ecommerce.routemisr.com/api/v1/wishlist`,{
     },
     
 })
-const payload=response.json()
+const payload= await response.json()
 return payload
 }
