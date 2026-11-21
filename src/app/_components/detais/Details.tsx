@@ -6,6 +6,7 @@ import { ShoppingCartPlus, Star } from 'lucide-react';
 import { productType } from '@/types/product.type';
 import AddBtn from '../AddBtn/AddBtn';
 import { Button } from '@/components/ui/button';
+import CheckOutBtn from '../CheckOutBtn/CheckOutBtn';
 export default function Details({data}:{data:productType}) {
 const [selectedImage,setSelectedImage]=useState(data.imageCover)
 const renderStars=(rating:number)=>{
@@ -62,10 +63,7 @@ return <div className='flex gap-0.5 items-center'>{stars}</div>
     <AddBtn show id={data.id}/> 
   </div>
   <div>
-      <Button className='w-full'>
-        Buy Now
-        <ShoppingCartPlus />
-      </Button>
+     <CheckOutBtn cartId={data._id}/>
   </div>
   </div>
   </div> 

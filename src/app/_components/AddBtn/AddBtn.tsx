@@ -16,7 +16,7 @@ async function AddCart(id:string) {
 const session =await getSession()
 if (!session) {
     router.push('/login')
-    
+    return
 }
 
 try {

@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getSession } from "next-auth/react";
 
 export default function AddHeart({ id ,isWishList}: { id: string ,isWishList:boolean}) {
     const [wishlist,setWishlist]=useState(isWishList)
@@ -15,6 +16,12 @@ export default function AddHeart({ id ,isWishList}: { id: string ,isWishList:boo
     }, [isWishList])
 
   async function ToggleWishList(id: string) {
+const session = await getSession()
+if (!session) {
+    router.push('/login')
+    return
+}
+
 if (wishlist) {
     try {
         setWishlist(false)
